@@ -1,0 +1,372 @@
+{% extends "base.html" %}
+{% load static %}
+{% block export-css %}
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static "plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" %}">
+<link rel="stylesheet" href="{% static "plugins/datatables-responsive/css/responsive.bootstrap4.min.css" %}">
+<link rel="stylesheet" href="{% static "plugins/cropperjs/dist/cropper.min.css" %}">
+{% endblock export-css %}
+{% block css %}
+<style type="text/css">
+img {
+  display: block;
+  max-width: 100%;
+}
+.preview {
+  overflow: hidden;
+  width: 160px; 
+  height: 160px;
+  margin: 10px;
+  border: 1px solid red;
+}
+.modal-lg{
+  max-width: 1000px !important;
+}
+</style>
+{% endblock css %}
+{% block content %}
+<!-- Content Header (Page header) -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-dark">Data Master</h1>
+      </div><!-- /.col -->
+      <div class="col-sm-6 text-right">
+        <button type="button" class="btn-tambah btn btn-primary" onclick="location.href='{% url 'buah/tambah_data_master' %}'" class="btn btn-primary">Tambah Data</button>
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table id="table-data-master" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>NO</th>
+                  <th>GAMBAR</th>
+                  <th>MEAN H</th>
+                  <th>MEAN S</th>
+                  <th>MEAN V</th>
+                  <th>ASPECT_RATIO</th>
+                  <th>FORM_FACTOR</th>
+                  <th>RECT</th>
+                  <th>NARROW_FACTOR</th>
+                  <th>PRD</th>
+                  <th>PLW</th>
+                  <th>KELAS</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for dataset in datasets %}
+                <tr data-model-id="{{ dataset.id }}">
+                  <td>{{ forloop.counter }}</td>
+                  <td><img  class="image-data"  src="{{   dataset.filename.url  }}" alt=""></td>
+                  <td>{{ dataset.mean_h }}</td>
+                  <td>{{ dataset.mean_s }}</td>
+                  <td>{{ dataset.mean_v }}</td>
+                  <td>{{ dataset.aspect_ratio }}</td>
+                  <td>{{ dataset.form_factor }}</td>
+                  <td>{{ dataset.rect }}</td>
+                  <td>{{ dataset.narrow_factor }}</td>
+                  <td>{{ dataset.prd }}</td>
+                  <td>{{ dataset.plw }}</td>
+                  <td>{{ dataset.get_kelas_display }}</td>
+                  <td>
+                    <button class="btn btn-danger" type="button" onclick="deleteData({{ dataset.id }})">Hapus</button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+<div class="modal fade" id="modal-default">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Default Modal</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form  id="form-upload">
+
+        <div class="card" id="card">
+
+          <div class="modal-body">
+
+            <!-- /.card -->
+
+
+            <div class="card-body">
+
+
+
+
+
+              <input type="file" name="input-image" class="form-control">
+              <br>
+              <div class="img-container">
+                <img id="image">
+
+              </div>
+              <br>
+              <div class="form-group">
+                <label >Kelas</label>
+                <select name="input-kelas" id="input-kelas" class="form-control" required>
+
+                  <option value="">Pilih Kelas</option>
+                  <option value="1">Buah</option>
+
+                </select>
+              </div>
+              {% csrf_token %}
+
+
+
+
+
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="btn-save">Save changes</button>
+          </div>
+
+
+        </div>
+      </form>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.content -->
+
+<div id="modal-large"  data-iziModal-fullscreen="true" style="display:none">
+
+  <div id="content-hasil" class="mt-2">
+
+    <div class="row">
+      <div class="col-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="text-center" style="font-weight:bold">
+              <p>RGB Image</p>
+            </div>
+            <img  class="center-image-card" id="image-clean" src="{% static 'images/empty-images.png' %}" alt="">
+            <div class="text-center mt-2">
+              <div class="btn-group-horizontal">
+                <button type="button" class="btn btn-info btn-download" data-type="R">R CSV</button>
+                <button type="button" class="btn btn-info btn-download" data-type="G">G CSV</button>
+                <button type="button" class="btn btn-info btn-download" data-type="B">B CSV</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="text-center" style="font-weight:bold">
+              <p>Gray Image</p>
+            </div>
+            <img  class="center-image-card" id="image-gray" src="{% static 'images/empty-images.png' %}" alt="">
+            <div class="text-center mt-2">
+              <button class="btn btn-info btn-download" type="button" data-type="gray" id="btn-download-gray">Gray CSV</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="text-center" style="font-weight:bold">
+              <p>Binary Image</p>
+            </div>
+            <img  class="center-image-card" id="image-binary" src="{% static 'images/empty-images.png' %}" alt="">
+            <div class="text-center mt-2">
+              <button class="btn btn-info btn-download" type="button" data-type="binary" id="btn-download-binary" >Binary CSV</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block export-js %}
+<!-- DataTables -->
+<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "plugins/datatables-bs4/js/dataTables.bootstrap4.min.js" %}"></script>
+<script src="{% static "plugins/datatables-responsive/js/dataTables.responsive.min.js" %}"></script>
+<script src="{% static "plugins/datatables-responsive/js/responsive.bootstrap4.min.js" %}"></script>
+<script src="{% static "plugins/cropperjs/dist/cropper.min.js" %}"></script>
+{% endblock export-js %}
+
+{% block js %}
+<script>
+var $modalUpload = $("#modal-default");
+var $btnShowModal = $("#btn-tambah");
+var $inputImg = $("input[name='input-image']");
+var $inputKelas = $("input[name='input-kelas']");
+var image = $("#image");
+var filename;
+var cropper;
+
+var detail_id
+
+
+$("#modal-large").iziModal({
+  history: false,
+  title: "Keterangan",
+    // subtitle: "Simple, complete and lightweight modal plugin with jquery.",
+    icon: 'icon-chat',
+    // overlayColor: 'rgba(255, 255, 255, 0.4)',
+    // headerColor: '#334c7b',
+    iconColor: 'white',
+    // fullscreen: true,
+    width: 700,
+    padding: 20,
+    // rtl: true,
+    bodyOverflow: true,
+    openFullscreen: true,
+    // closeButton: false,
+    // top: 50,
+    // bottom: 50,
+    onClosed: function(modal){
+      history.replaceState(null, "", window.location.pathname)
+        // console.info(modal)
+        //modal.destroy();
+      },
+      onOpening: function(modal){
+        // if (model_id == null) {
+        //     history.replaceState(null, "", window.location.pathname)
+        //     modal.close();
+        // }
+        modal.startLoading();
+      },
+      onOpened: function(modal){
+        modal.stopLoading();
+        setTimeout(function(){
+          $("#modal-large .iziModal-wrap").scrollTop(0);            
+        },1)
+      }
+    });
+$("#modal-large").iziModal('setZindex', 99999);
+
+
+$("#table-data-master").DataTable({
+  "scrollX": true,
+});
+
+$btnShowModal.click(function() {
+  $modalUpload.modal("show");
+});
+
+
+
+
+function deleteData(id) {
+ $.ajax({
+  headers: {'X-CSRFToken': csrftoken.value},
+  type: "POST",
+  dataType: "json",
+  url: "{% url 'buah/hapus_data' %}",
+  data: {data_id: id},
+  beforeSend: function(){
+  }
+})
+ .done(function(result) {
+  if (result.success == 1) {
+
+    window.location.reload(false);
+  }
+})
+ .always(function() {
+
+ })
+}
+
+
+</script>
+
+<script>
+$('#table-data-master').on('click','.image-data',function () {
+
+
+  var id = $(this).closest("tr").data("modelId");
+  detail_id = id;
+  $.ajax({
+    headers: {'X-CSRFToken': csrftoken.value},
+    type: "POST",
+    dataType: "json",
+    url: "{% url 'buah/detail_gambar' %}",
+    data: {id:id},
+    beforeSend: function(){
+
+    }
+  })
+  .done(function(result) {
+    if (result.success == 1) {
+
+      $("#image-clean").attr("src", "data:image/png;base64,"+(result.image_clean));
+      $("#image-gray").attr("src", "data:image/png;base64,"+(result.image_gray));
+      $("#image-binary").attr("src", "data:image/png;base64,"+(result.image_binary));
+
+
+      $("#modal-large").iziModal("open");
+
+    }
+  })
+
+  .always(function() {
+
+  });
+
+
+  
+
+});
+
+
+$(".btn-download").click(function() {
+  var type = $(this).data('type');
+  var id = detail_id;
+
+  var data = {
+    type: type,
+    id: id,
+  };
+
+  var url = '{% url "buah/download_csv" %}';
+  strUrl = url.substring(0, url.length-1) + "?"+$.param(data);
+
+  $("body").append('<iframe id="firam" src="'+strUrl+'" style="display: none;" ></iframe>');
+});
+</script>
+
+{% endblock js %}

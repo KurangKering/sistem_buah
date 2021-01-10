@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+{% block export-css %}
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/cropperjs/dist/cropper.min.css' %}">
+{% endblock export-css %}
+{% block css %}
+<style type="text/css">
+
+</style>
+{% endblock css %}
+{% block content %}
+
+<h2 class="title-heading">Data ANFIS</h2>
+
+<button type="button" id="btn-tambah" onclick="location.href='{% url 'buah/tambah_model' %}'" class="btn btn-primary btn-tambah">Buat Model Baru</button>
+
+<br />
+
+
+<table id="table-model-anfis" class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Data Latih</th>
+      <th>Data Uji</th>
+      <th>Epoch</th>
+      <th>Akurasi</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for model in models %}
+    <tr>
+      <td>{{ forloop.counter }}</td>
+      <td>{{ model.jumlah_data_latih }}</td>
+      <td>{{ model.jumlah_data_uji }}</td>
+      <td>{{ model.epoch }}</td>
+      <td>{{ model.accuracy }}</td>
+      <td>
+
+
+        <button  class="btn btn-danger btn-sm btn-icon icon-left btn-hapus" onclick="hapusAnfis({{ model.id }})">
+          <i class="entypo-cancel"></i>
+          Delete
+        </button>
+        <button  class="btn btn-info btn-sm btn-icon icon-left btn-detail" onclick="location.href='{% url 'buah/lihat_anfis' model.id %}'">
+          <i class="entypo-detail"></i>
+          Detail
+        </button>
+        
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock content %}
+
+{% block export-js %}
+<!-- DataTables -->
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/cropperjs/dist/cropper.min.js' %}"></script>
+{% endblock export-js %}
+
+{% block js %}
+<script>
+
+$("#table-model-anfis").DataTable();
+
+function hapusAnfis(model_id) {
+  var model_id = model_id
+  axios.post('{% url "buah/hapus_anfis" %}', Qs.stringify({ 
+    model_id: model_id
+  }))
+  .then((res) => {
+    data = res.data
+    if (data.success == 1) {
+      window.location.reload(false);
+    }
+  })
+}
+</script>
+{% endblock js %}
