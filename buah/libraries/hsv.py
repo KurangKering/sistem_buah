@@ -113,6 +113,10 @@ class HSV:
                 hsv_image[row, col, 1] = s
                 hsv_image[row, col, 2] = v
 
+        self.h = hsv_image[:, :, 0]
+        self.s = hsv_image[:, :, 1]
+        self.v = hsv_image[:, :, 2]
+
         self.mean_h = np.mean(hsv_image[:,:,0])
         self.mean_s = np.mean(hsv_image[:,:,1])
         self.mean_v = np.mean(hsv_image[:,:,2])
@@ -121,12 +125,11 @@ class HSV:
     def main(self, image):
         clean_image = self.read_image(image)
         self.calculate(clean_image)
-        
-        
+
+
 if __name__ == '__main__':
      path = r'C:\Users\Popeye\Documents\ILHAM RAHMADHANI\gaharu\fe46c7e0-4a1b-4a5a-ad91-68f399185aef.png'
      a = HSV(path)
      print(a.get_mean_h())
      print(a.get_mean_s())
      print(a.get_mean_v())
-     

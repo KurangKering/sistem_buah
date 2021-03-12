@@ -57,10 +57,12 @@ def proses_tambah_data_master(request):
     morfologi = factory.make_morfologi(image)
     image_gray = morfologi.gray
     image_binary = morfologi.cleaned.astype(int)*255
+    
+    
 
-    image_clean = base64.b64encode(cv2.imencode('.jpg', image)[1]).decode()
-    image_gray = base64.b64encode(cv2.imencode('.jpg', image_gray)[1]).decode()
-    image_binary = base64.b64encode(cv2.imencode('.jpg', image_binary)[1]).decode()
+    image_clean = base64.b64encode(cv2.imencode('.png', image)[1]).decode()
+    image_gray = base64.b64encode(cv2.imencode('.png', image_gray)[1]).decode()
+    image_binary = base64.b64encode(cv2.imencode('.png', image_binary)[1]).decode()
 
     hsv = factory.make_hsv(image)
 
@@ -128,16 +130,29 @@ def detail_gambar(request):
     image_gray = morfologi.gray
     image_binary = morfologi.cleaned.astype(int)*255
 
-    image_clean = base64.b64encode(cv2.imencode('.jpg', image)[1]).decode()
-    image_gray = base64.b64encode(cv2.imencode('.jpg', image_gray)[1]).decode()
-    image_binary = base64.b64encode(cv2.imencode('.jpg', image_binary)[1]).decode()
+    image_clean = base64.b64encode(cv2.imencode('.png', image)[1]).decode()
+    image_gray = base64.b64encode(cv2.imencode('.png', image_gray)[1]).decode()
+    image_binary = base64.b64encode(cv2.imencode('.png', image_binary)[1]).decode()
+
+    hsv = factory.make_hsv(image)
+
+
+    h = hsv.h
+    s = hsv.s
+    v = hsv.v
+    image_h = base64.b64encode(cv2.imencode('.png', h)[1]).decode()
+    image_s = base64.b64encode(cv2.imencode('.png', s)[1]).decode()
+    image_v = base64.b64encode(cv2.imencode('.png', v)[1]).decode()
 
     success = 1
     context = {
         'success': success,
         'image_clean': image_clean,
         'image_gray': image_gray,
-        'image_binary': image_binary
+        'image_binary': image_binary,
+        'image_h': image_h,
+        'image_s': image_s,
+        'image_v': image_v,
     }
 
     return JsonResponse(context, safe=False)
@@ -252,7 +267,6 @@ def proses_pelatihan(request):
     train_df = train_df.sort_index()
     test_df = test_df.sort_index()
 
-    import pdb; pdb.set_trace()
 
     train_data = train_df.copy()
     test_data = test_df.copy()
@@ -476,9 +490,9 @@ def proses_pengujian(request):
     image_gray = morfologi.gray
     image_binary = morfologi.cleaned.astype(int)*255
 
-    image_clean = base64.b64encode(cv2.imencode('.jpg', image)[1]).decode()
-    image_gray = base64.b64encode(cv2.imencode('.jpg', image_gray)[1]).decode()
-    image_binary = base64.b64encode(cv2.imencode('.jpg', image_binary)[1]).decode()
+    image_clean = base64.b64encode(cv2.imencode('.png', image)[1]).decode()
+    image_gray = base64.b64encode(cv2.imencode('.png', image_gray)[1]).decode()
+    image_binary = base64.b64encode(cv2.imencode('.png', image_binary)[1]).decode()
 
     hsv = factory.make_hsv(image)
 

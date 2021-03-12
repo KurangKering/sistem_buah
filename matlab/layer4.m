@@ -2,6 +2,7 @@
 [rOutput3, cOutput3] =  size(output_layer3);
 [rConse, cConse] = size(conse);
 
+nilai_f = zeros(rDf, cOutput3);
 output_layer4 = zeros(rDf, cOutput3);
 for i=1:rDf
     for j=1:cOutput3
@@ -13,6 +14,7 @@ for i=1:rDf
                 f = f + conse(j,k);
             end
         end
+        nilai_f(i,j) = f;
         output_layer4(i,j) = output_layer3(i,j) * f;
     end
     

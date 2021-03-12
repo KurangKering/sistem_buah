@@ -134,7 +134,7 @@ ROUNDING = 5
 MATLAB_EXE = r"D:\MATLAB\R2017b\bin\matlab.exe"
 
 
-RUN_MATLAB = 1
+RUN_MATLAB = 0
 
 # buka windows explorer, terus tulis %temp% , lalu copy dan pastekan dir ke var TEMP_DIR
 TEMP_DIR = r'C:\Users\Popeye\AppData\Local\Temp'

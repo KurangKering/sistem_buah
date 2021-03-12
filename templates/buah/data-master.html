@@ -184,6 +184,58 @@
 
 
     </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="text-center" style="font-weight:bold">
+              <p>H Image</p>
+            </div>
+            <img  class="center-image-card" id="image-h" src="{% static 'images/empty-images.png' %}" alt="">
+            <br>
+            <div class="text-center mt-2">
+              <div class="btn-group-horizontal">
+                <button type="button" class="btn btn-info btn-download" data-type="H">H</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="text-center" style="font-weight:bold">
+              <p>S Image</p>
+            </div>
+            <img  class="center-image-card" id="image-s" src="{% static 'images/empty-images.png' %}" alt="">
+            <br>
+            <div class="text-center mt-2">
+              <div class="btn-group-horizontal">
+                <button type="button" class="btn btn-info btn-download" data-type="S">S</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="text-center" style="font-weight:bold">
+              <p>V Image</p>
+            </div>
+            <img  class="center-image-card" id="image-v" src="{% static 'images/empty-images.png' %}" alt="">
+            <br>
+            <div class="text-center mt-2">
+              <div class="btn-group-horizontal">
+                <button type="button" class="btn btn-info btn-download" data-type="V">V</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
   </div>
 </div>
 {% endblock content %}
@@ -306,6 +358,9 @@ $('#table-data-master').on('click','.image-data',function () {
       $("#image-clean").attr("src", "data:image/png;base64,"+(result.image_clean));
       $("#image-gray").attr("src", "data:image/png;base64,"+(result.image_gray));
       $("#image-binary").attr("src", "data:image/png;base64,"+(result.image_binary));
+      $("#image-h").attr("src", "data:image/png;base64,"+(result.image_h));
+      $("#image-s").attr("src", "data:image/png;base64,"+(result.image_s));
+      $("#image-v").attr("src", "data:image/png;base64,"+(result.image_v));
 
 
       $("#modal-large").iziModal("open");
