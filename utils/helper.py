@@ -7,7 +7,7 @@ def get_second_value(list_of_tuples, first_value):
 
 def get_url_citra(kelas):
     image_name = 'citra-kelas'
-    image_filename = ['malaccensis.png', 'subintegra.png']
+    image_filename = ['malaccensis.png', 'microcarpa.png']
 
 
     if (kelas == 0):

@@ -13,3 +13,4 @@ opt.DisplayFinalResults = 0;
 if exist('dirsave', 'var') && ~isempty(dirsave)
     writefis(outfis, dirsave);
 end
+end

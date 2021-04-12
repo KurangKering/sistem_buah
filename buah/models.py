@@ -16,11 +16,11 @@ class Dataset(models.Model):
     mean_v = models.FloatField(null=True, blank=True)
 
     MALACCENSIS = 0
-    SUBINTEGRA = 1
+    MICROCARPA = 1
 
     KELAS_CHOICES = [
         (MALACCENSIS, 'MALACCENSIS'),
-        (SUBINTEGRA, 'SUBINTEGRA'),
+        (MICROCARPA, 'MICROCARPA'),
     ]
     kelas = models.IntegerField(null=True, blank=True, choices=KELAS_CHOICES)
 
