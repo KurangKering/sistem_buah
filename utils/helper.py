@@ -1,20 +1,23 @@
 import os
 import pandas
-
+from django.templatetags.static import static
 
 def get_second_value(list_of_tuples, first_value):
 	return next((y for x,y in list_of_tuples if x == first_value), None)
 
 def get_url_citra(kelas):
-    image_name = 'citra-kelas'
+    url = 'citra-kelas'
     image_filename = ['malaccensis.png', 'microcarpa.png']
 
 
     if (kelas == 0):
-        image_name = os.path.join(image_name, image_filename[0])
+        url = os.path.join(url, image_filename[0])
     elif (kelas == 1):
-        image_name = os.path.join(image_name, image_filename[1])
+        url = os.path.join(url, image_filename[1])
     else:
-        image_name = None
+        url = None
 
-    return image_name
+    return url_citra(url)
+
+def url_citra(url):
+    return '<img width="100%" src="{}" alt="">'.format(static(url))

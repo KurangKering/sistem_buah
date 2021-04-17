@@ -8,7 +8,9 @@
 {% endblock export-css %}
 {% block css %}
 <style type="text/css">
-
+th {
+  text-align: center;
+}
 </style>
 {% endblock css %}
 {% block content %}
@@ -23,12 +25,12 @@
 <table id="table-model-anfis" class="table table-bordered table-striped">
   <thead>
     <tr>
-      <th>ID</th>
+      <th width="5%">ID</th>
       <th>Data Latih</th>
       <th>Data Uji</th>
       <th>Epoch</th>
       <th>Akurasi</th>
-      <th>Action</th>
+      <th width="17%">Action</th>
     </tr>
   </thead>
   <tbody>
@@ -47,7 +49,7 @@
           Delete
         </button>
         <button  class="btn btn-info btn-sm btn-icon icon-left btn-detail" onclick="location.href='{% url 'buah/lihat_anfis' model.id %}'">
-          <i class="entypo-detail"></i>
+          <i class="entypo-list"></i>
           Detail
         </button>
         

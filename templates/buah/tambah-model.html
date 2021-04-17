@@ -124,6 +124,9 @@
               <thead>
                 <tr>
                   <th>NO</th>
+                  <th>Citra Prediksi</th>
+                  <th>KELAS</th>
+                  <th>Kelas Prediksi</th>
                   <th>MEAN H</th>
                   <th>MEAN S</th>
                   <th>MEAN V</th>
@@ -133,9 +136,6 @@
                   <th>NARROW_FACTOR</th>
                   <th>PRD</th>
                   <th>PLW</th>
-                  <th>KELAS</th>
-                  <th>Kelas Prediksi</th>
-                  <th>Citra Prediksi</th>
                 </tr>
               </thead>
 
@@ -189,6 +189,9 @@
     "scrollX": true,
     "columns": [
     { "data": "nomor" },
+    { "data": "citra_prediksi" },
+    { "data": "kelas" },
+    { "data": "kelas_predicted" },
     { "data": "mean_h" },
     { "data": "mean_s" },
     { "data": "mean_v" },
@@ -198,17 +201,7 @@
     { "data": "narrow_factor" },
     { "data": "prd" },
     { "data": "plw" },
-    { "data": "kelas" },
-    { "data": "kelas_predicted" },
-    { 
-      "data": "citra_prediksi",
-      "render": function(data, type, row, meta) {
-        if (data == null) {
-          return "";
-        }
-        return '<img width="100%" src="'+urlStatic+data+'" alt="">';
-      }
-    },
+    
     ],
     pageLength: 5,
 

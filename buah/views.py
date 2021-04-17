@@ -57,8 +57,8 @@ def proses_tambah_data_master(request):
     morfologi = factory.make_morfologi(image)
     image_gray = morfologi.gray
     image_binary = morfologi.cleaned.astype(int)*255
-    
-    
+
+
 
     image_clean = base64.b64encode(cv2.imencode('.png', image)[1]).decode()
     image_gray = base64.b64encode(cv2.imencode('.png', image_gray)[1]).decode()
@@ -377,14 +377,6 @@ def proses_pelatihan(request):
 
     table_train = json.loads(train_data.to_json(orient="records"))
     table_test = json.loads(test_data.to_json(orient="records"))
-    context = {
-        "table_train": table_train,
-        "table_test": table_test,
-        "jumlah_benar": num_correct,
-        "total_data_test": total_data_test,
-        "akurasi": accuracy,
-        "epoch": epoch,
-    }
 
 
     context = {
